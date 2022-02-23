@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tarea 3 Jean Baez</title>
+    <style>
+      .container {
+        width: 80%;
+        margin: 0 auto;
+      }
+      #main_cont {
+        background: wheat;
+        border: double 5px black;
+        border-radius: 10px;
+        padding: 50px;
+         display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        min-width: 1000px;
+        
+      }
+      #main_cont div{
+            width:150px;
+            height:150px;
+            border: solid 2px gray;
+            margin: 5px;
+            border-radius: 10px;
+            background: white;
+            vertical-align: middle;
+            justify-content: center;
+            text-align: center;
+      }
+      #main_cont div:hover{
+            background: red;
+            color: white;
+            cursor: pointer;
+      }
+      .img_premio{
+        width: 100%;
+        height: 80%;
+        border-radius: 10px;
+        margin-top: 10px;
+           visibility:hidden;
+      }
+     #main_cont div .visible{
+        visibility: visible;
+     }
+
+    </style>
+  </head>
+  <body onload="initGame()">
+    <div class="main_cont">
+      <header>
+        <h3>Tarea 2</h3>
+      </header>
+      <div id="main_cont">
+        <div>
+          <img src="img/img1.jpg" alt="" />
+        </div>
+      </container>
+    </div>
+  </body>
+  <script>
+    function _gid(element) {
+      return document.getElementById(element)
+    }
+    function _dce(element) {
+      return document.createElement(element)
+    }
+
+    var imagenesVisibles = 0;
+    var imagenAnterior = false;
+    function verificar(obj){
+
+    index = obj.getAttribute('imagen');
+     imagen = _gid('imagen'+index);
+     visible = imagen.getAttribute('visible');
+     if(visible == 0){
+         imagen.style.visibility = 'visible';
+         imagen.setAttribute('visible',1);
+         imagenesVisibles++;
+         if(!imagenAnterior){
+                imagenAnterior = imagen;
+         }
+     }
+     setTimeout(()=>{  
+     if (imagenesVisibles >1 ){
+         
+         if (imagenAnterior.getAttribute('src')== imagen.getAttribute('src')){
+            alert('Son iguales');
+            imagenAnterior = false;
+            imagenesVisibles = 0;
+            imagenAnterior.parentNode.removeAttribute('onclick');
+            imagen.parentNode.removeAttribute('onclick');
+         }else {
+             alert(' No Son Iguales');
+             imagen.style.visibility = 'hidden';
+             imagen.setAttribute('visible',0);
+             imagenAnterior.style.visibility = 'hidden';
+             imagenAnterior.setAttribute('visible',0);
+             
+         }
+            imagenesVisibles = 0;
+            imagenAnterior = false; 
+     }
+    },300);
+    }
+    function initGame() {
+     var  destino = _gid('main_cont')
+      destino.innerHTML = '';
+       var fotos = [0,1,2,3,4,5,6,7,8,0,1,2,3,4,5,6,7,8];
+      fotos.sort(() => .5 - Math.random());
+
+      fotos.map((prop,index) =>  {
+          x = fotos[index];
+        div = _dce('div');
+        div.setAttribute('imagen',index);
+        div.setAttribute('onclick','verificar(this)');
+        div.innerHTML = `
+          
+         <img visible="0" id="imagen${index}" src="img/${x}.png" class="img_premio" />
+         `
+        destino.appendChild(div)
+      });
+    }
+  </script>
+</html>
